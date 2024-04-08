@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using gitSummaryMvc.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace gitSummaryMvc.Controllers
 {
@@ -6,10 +7,17 @@ namespace gitSummaryMvc.Controllers
     [ApiController]
     public class GitController: Controller
     {
-        [HttpGet]
-        public IEnumerable<String> Get()
+        private readonly TtsdbContext _tsdbContext;
+
+        public GitController(TtsdbContext tsdbContext)
         {
-            return new List<string> { ""};
+            _tsdbContext = tsdbContext;
+        }
+
+        [HttpGet]
+        public IEnumerable<User> Get()
+        {
+            return _tsdbContext.Users.ToList();
         }
 
     }

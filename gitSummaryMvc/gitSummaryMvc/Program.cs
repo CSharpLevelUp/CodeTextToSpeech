@@ -1,4 +1,6 @@
 using Auth0.AspNetCore.Authentication;
+using gitSummaryMvc.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace gitSummaryMvc
 {
@@ -18,6 +20,9 @@ namespace gitSummaryMvc
                 options.Domain = builder.Configuration["Auth0:Domain"];
                 options.ClientId = builder.Configuration["Auth0:ClientId"];
             });
+
+            builder.Services.AddDbContext<TtsdbContext>(options =>
+                options.UseNpgsql(builder.Configuration.GetConnectionString("ttsdbManagerContext")));
 
             var app = builder.Build();
 
