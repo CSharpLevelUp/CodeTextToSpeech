@@ -27,7 +27,7 @@ public partial class TtsdbContext : DbContext
     {
         modelBuilder.Entity<Commit>(entity =>
         {
-            entity.HasNoKey();
+            entity.HasKey(e => e.CommitId);
 
             entity.Property(e => e.CommitId).HasColumnName("commitId");
             entity.Property(e => e.Created)

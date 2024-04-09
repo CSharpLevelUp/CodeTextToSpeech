@@ -22,9 +22,12 @@ namespace gitSummaryMvc
             });
 
             builder.Services.AddDbContext<TtsdbContext>(options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString("ttsdbManagerContext")));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("ttsdbManagerContext"))
+            );
 
             var app = builder.Build();
+
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -42,9 +45,7 @@ namespace gitSummaryMvc
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+            app.MapControllers();
 
             app.UseSwagger();
             app.UseSwaggerUI();
