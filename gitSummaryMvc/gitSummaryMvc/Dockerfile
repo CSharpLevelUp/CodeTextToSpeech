@@ -54,3 +54,4 @@ COPY --from=build /app .
 USER $APP_UID
 
 ENTRYPOINT ["dotnet", "gitSummaryMvc.dll"]
+EXPOSE 8080
