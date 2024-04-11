@@ -1,4 +1,5 @@
 ﻿using gitSummaryMvc.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,11 +16,20 @@ namespace gitSummaryMvc.Controllers
             _tsdbContext = tsdbContext;
         }
 
+        [Route("test")]
+        [Authorize]
+        [HttpGet]
+        public ActionResult<String> GetTest()
+        {
+            return Ok("Success");
+        }
+
         [Route("users")]
         [HttpGet]
-        public IEnumerable<User> Get()
+        [Authorize]
+        public IEnumerable<User> GetUsers(int userid)
         {
-            return _tsdbContext.Users.ToList();
+            return _tsdbContext.Users.Where(user => user.UserId == userid).First();
         }
 
         [Route("commits")]

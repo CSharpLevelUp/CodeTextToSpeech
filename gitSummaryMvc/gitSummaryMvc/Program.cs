@@ -1,6 +1,9 @@
 using Auth0.AspNetCore.Authentication;
 using gitSummaryMvc.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace gitSummaryMvc
 {
@@ -19,6 +22,13 @@ namespace gitSummaryMvc
             {
                 options.Domain = builder.Configuration["Auth0:Domain"];
                 options.ClientId = builder.Configuration["Auth0:ClientId"];
+            });
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.Authority = builder.Configuration["Auth0Api:Domain"];
+                options.Audience = builder.Configuration["Auth0Api:Audience"];
             });
 
             builder.Services.AddDbContext<TtsdbContext>(options =>
@@ -44,8 +54,10 @@ namespace gitSummaryMvc
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.MapControllers();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
 
             app.UseSwagger();
             app.UseSwaggerUI();
