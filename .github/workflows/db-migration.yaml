@@ -24,7 +24,6 @@ jobs:
           aws-region: "eu-west-1"
 
       - name: Perform migration
-        if: github.ref.name == 'main'
         uses: liquibase-github-actions/update@v4.26.0
         with:
           changelogFile: "./database/liquibase/changelog.yaml"
