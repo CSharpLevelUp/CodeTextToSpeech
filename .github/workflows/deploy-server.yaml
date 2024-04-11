@@ -1,0 +1,65 @@
+name: 'Deploy Server GitHub Action'
+on:
+  push:
+    paths: 
+      - "gitSummaryMvc/gitSummaryMvc/**"
+    branches:
+      - main
+      
+  workflow_dispatch:
+  
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./gitSummaryMvc/gitSummaryMvc/
+    steps:
+    # checkout repo
+    - name: 'Checkout'
+      uses: actions/checkout@main
+
+    # configure credentials
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{secrets.AWS_ASSUME_ROLE}}
+        aws-region: "eu-west-1"
+
+    - name: Set up AWS CLI
+      uses: unfor19/install-aws-cli-action@v1
+
+    # Pull environment config from S3
+    - name: Retrieve environment variables file
+      run: |
+        aws s3 cp s3://${{secrets.ENV_BUCKET_NAME}}/${{secrets.SERVER_ENV_OBJECT_KEY}} ./.env
+
+    # Generate version name from time
+    - name: Generate Version name
+      id: version-tag
+      run: |
+          echo "version=app-$(date '+%y%m%d_%H%M%s')" >> $GITHUB_ENV
+
+    # add entire working directory to a zip
+    - name: Zip
+      run: |
+        zip -r ${{env.version}} . 
+
+    # Upload the zip to the bucket created to house EB deployment packages
+    - name: Upload to S3
+      run: |
+        aws s3 cp ${{env.version}}.zip s3://${{secrets.EB_BUCKET_NAME}}/${{secrets.EB_BUCKET_PATH}}/${{env.version}}.zip
+
+    # create an application version tag pointing to the the zip in s3
+    - name: Create new application version
+      run: |
+        aws elasticbeanstalk create-application-version --application-name codetexttospeech --version-label ${{env.version}} --source-bundle S3Bucket=${{secrets.EB_BUCKET_NAME}},S3Key=${{secrets.EB_BUCKET_PATH}}/${{env.version}}.zip
+   
+    # deploy the new version to EB
+    - name: Deploy to EB
+      run: |
+        aws elasticbeanstalk update-environment --environment-name codetexttospeech --version-label ${{env.version}}
