@@ -1,5 +1,14 @@
-CREATE TABLE tdb.Player (
-    PlayerId INT IDENTITY(1,1) PRIMARY KEY,
-    DisplayName VARCHAR(255) NOT NULL,
+CREATE TABLE Users (
+  userId integer PRIMARY KEY,
+  username varchar
 );
-GO
+
+CREATE TABLE Commit 
+( 
+   commitId integer PRIMARY KEY,
+   userId integer REFERENCES Users (userId),
+   createdDate timestamp,
+   message text,
+   diff text,
+   summary text
+);
