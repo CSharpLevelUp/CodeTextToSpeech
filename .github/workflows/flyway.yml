@@ -8,7 +8,8 @@ jobs:
   Migrate:
     name: RunMigration
     runs-on: self-hosted  
-    steps:       
+    steps:      
+    - uses: docker-practice/actions-setup-docker@master 
     - uses: docker://flyway/flyway:9
       env:
         FLYWAY_URL: ${{ secrets.FLYWAY_DB_URL }}
