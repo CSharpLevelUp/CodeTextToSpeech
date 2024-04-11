@@ -17,7 +17,6 @@ namespace gitSummaryMvc.Controllers
         }
 
         [Route("test")]
-        [Authorize]
         [HttpGet]
         public ActionResult<String> GetTest()
         {
@@ -26,23 +25,22 @@ namespace gitSummaryMvc.Controllers
 
         [Route("users")]
         [HttpGet]
-        [Authorize]
-        public IEnumerable<User> GetUsers(int userid)
+        public IEnumerable<User> GetUsers()
         {
             return _tsdbContext.Users.ToList();
         }
 
         [Route("commits")]
         [HttpGet]
-        public IEnumerable<Commit> GetCommitsByUserId(int userId)
+        public IEnumerable<Commit> GetCommitsByUserId(string userId)
         {   
-            return _tsdbContext.Commits.ToList();
+            return _tsdbContext.Commits.Where(commit => commit.Userid == userId).ToList();
         }
 
         [HttpPost]
         public async Task<ActionResult<Commit>> Post(Commit commit)
         {
-            if (commit.UserId == null)
+            if (commit.Userid == null)
             {
                 return BadRequest();
             }

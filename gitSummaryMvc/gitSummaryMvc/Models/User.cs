@@ -5,7 +5,9 @@ namespace gitSummaryMvc.Models;
 
 public partial class User
 {
-    public int UserId { get; set; }
+    public string Userid { get; set; } = null!;
 
     public string? Username { get; set; }
+
+    public virtual ICollection<Commit> Commits { get; set; } = new List<Commit>();
 }
