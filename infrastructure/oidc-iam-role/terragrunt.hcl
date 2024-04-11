@@ -8,7 +8,7 @@ include "root" {
 
 inputs = {
   name = "Admin"
-  subjects = ["CSharpLevelUp/CodeTextToSpeech:main"]
+  subjects = ["CSharpLevelUp/CodeTextToSpeech:*"]
 
   policies = {
     AdminAccess = "arn:aws:iam::aws:policy/AdministratorAccess"
