@@ -12,7 +12,7 @@ jobs:
     - run: ls
     - run: |
        docker run --rm \
-       -v database/flyway/sql:/flyway/sql \
+       -v /database/flyway/sql:/flyway/sql \
        flyway/flyway \
        -url=${{ secrets.FLYWAY_DB_URL }} \
        -user=${{ secrets.FLYWAY_USER }} \
