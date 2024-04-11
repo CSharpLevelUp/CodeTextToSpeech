@@ -1,5 +1,6 @@
 using Auth0.AspNetCore.Authentication;
 using gitSummaryMvc.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -21,10 +22,19 @@ namespace gitSummaryMvc
                 options.ClientId = Environment.GetEnvironmentVariable("AUTH0_CLIENT_ID");
             });
 
+             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.Authority = Environment.GetEnvironmentVariable("AUTH0_DOMAIN");
+                options.Audience = Environment.GetEnvironmentVariable("AUTH0_AUDIENCE");
+            });
+
             builder.Services.AddDbContext<TtsdbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("ttsdbManagerContext")));
 
             var app = builder.Build();
+
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

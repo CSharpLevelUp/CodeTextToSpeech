@@ -1,12 +1,12 @@
 CREATE TABLE Users (
-  userId integer PRIMARY KEY,
-  username varchar
+  userId text PRIMARY KEY,
+  username text
 );
 
-CREATE TABLE Commit 
+CREATE TABLE Commits
 ( 
-   commitId integer PRIMARY KEY,
-   userId integer REFERENCES Users (userId),
+   commitId serial PRIMARY KEY,
+   userId text REFERENCES Users (userId),
    createdDate timestamp,
    message text,
    diff text,
