@@ -27,8 +27,8 @@ namespace gitSummaryMvc
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
-                options.Authority = builder.Configuration["Auth0Api:Domain"];
-                options.Audience = builder.Configuration["Auth0Api:Audience"];
+                options.Authority = Environment.GetEnvironmentVariable("AUTH0_DOMAIN");
+                options.Audience = Environment.GetEnvironmentVariable("AUTH0_AUDIENCE");
             });
 
             builder.Services.AddDbContext<TtsdbContext>(options =>
