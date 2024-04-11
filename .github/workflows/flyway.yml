@@ -7,12 +7,11 @@ on:
 jobs:
   Migrate:
     name: RunMigration
-    runs-on: self-hosted         
-    steps:
-      - name: RunMigration
-        uses: actions/checkout@v3.0.0
-      - uses: joshuaavalon/flyway-action@v3.0.0
-        with:
-          url: ${{ secrets.FLYWAY_DB_URL }}
-          user: ${{ secrets.FLYWAY_USER }}
-          password: ${{ secrets.FLYWAY_PASSWORD }}
+    runs-on: self-hosted  
+    steps:       
+    - uses: docker://flyway/flyway:9
+      env:
+        FLYWAY_URL: ${{ secrets.FLYWAY_DB_URL }}
+        FLYWAY_USER: ${{ secrets.FLYWAY_USER }}
+        FLYWAY_PASSWORD: ${{ secrets.FLYWAY_PASSWORD}}
+        FLYWAY_LOCATIONS: ./database/flyway/sql
