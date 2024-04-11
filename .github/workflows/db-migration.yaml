@@ -28,5 +28,5 @@ jobs:
         with:
           changelogFile: "./database/liquibase/changelog.yaml"
           url: ${{ secrets.FLYWAY_DB_URL}}
-          password: "${{secrets.FLYWAY_USER}}"
-          username: "${{secrets.FLYWAY_PASSWORD}}"
+          password: "${{secrets.FLYWAY_PASSWORD}}"
+          username: "${{secrets.FLYWAY_USER}}"
