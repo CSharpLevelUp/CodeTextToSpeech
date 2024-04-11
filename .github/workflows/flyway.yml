@@ -9,5 +9,7 @@ jobs:
     name: RunMigration
     runs-on: self-hosted  
     steps:
+    - name: 'Checkout'
+      uses: actions/checkout@main
     - run: |
        docker run --rm -v /database/flyway/sql:/flyway/sql flyway/flyway -url=${{ secrets.FLYWAY_DB_URL }} -user=${{ secrets.FLYWAY_USER }} -password=${{ secrets.FLYWAY_PASSWORD }} migrate
