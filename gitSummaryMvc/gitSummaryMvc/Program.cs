@@ -2,8 +2,6 @@ using Auth0.AspNetCore.Authentication;
 using gitSummaryMvc.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
 using System;
 
 namespace gitSummaryMvc
@@ -24,7 +22,7 @@ namespace gitSummaryMvc
                 options.ClientId = Environment.GetEnvironmentVariable("AUTH0_CLIENT_ID");
             });
 
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
                 options.Authority = Environment.GetEnvironmentVariable("AUTH0_DOMAIN");
@@ -32,8 +30,7 @@ namespace gitSummaryMvc
             });
 
             builder.Services.AddDbContext<TtsdbContext>(options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString("ttsdbManagerContext"))
-            );
+                options.UseNpgsql(builder.Configuration.GetConnectionString("ttsdbManagerContext")));
 
             var app = builder.Build();
 
@@ -54,10 +51,10 @@ namespace gitSummaryMvc
 
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.UseSwagger();
             app.UseSwaggerUI();
