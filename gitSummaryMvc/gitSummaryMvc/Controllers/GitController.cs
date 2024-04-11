@@ -29,7 +29,7 @@ namespace gitSummaryMvc.Controllers
         [Authorize]
         public IEnumerable<User> GetUsers(int userid)
         {
-            return _tsdbContext.Users.Where(user => user.UserId == userid).First();
+            return _tsdbContext.Users.ToList();
         }
 
         [Route("commits")]

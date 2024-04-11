@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using System;
 
 namespace gitSummaryMvc
 {
@@ -12,7 +13,6 @@ namespace gitSummaryMvc
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddSwaggerGen();
@@ -20,8 +20,8 @@ namespace gitSummaryMvc
 
             builder.Services.AddAuth0WebAppAuthentication(options =>
             {
-                options.Domain = builder.Configuration["Auth0:Domain"];
-                options.ClientId = builder.Configuration["Auth0:ClientId"];
+                options.Domain = Environment.GetEnvironmentVariable("AUTH0_DOMAIN");
+                options.ClientId = Environment.GetEnvironmentVariable("AUTH0_CLIENT_ID");
             });
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
