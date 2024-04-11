@@ -9,6 +9,7 @@ jobs:
     name: RunMigration
     runs-on: self-hosted  
     steps:
+    - run: ls
     - run: |
        docker run --rm \
        -v /database/flyway/sql:/flyway/sql \
