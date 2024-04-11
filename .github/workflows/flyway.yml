@@ -9,9 +9,11 @@ jobs:
     name: RunMigration
     runs-on: self-hosted  
     steps:
-    - uses: docker://flyway/flyway:9
-      env:
-        FLYWAY_URL: ${{ secrets.FLYWAY_DB_URL }}
-        FLYWAY_USER: ${{ secrets.FLYWAY_USER }}
-        FLYWAY_PASSWORD: ${{ secrets.FLYWAY_PASSWORD}}
-        FLYWAY_LOCATIONS: ./database/flyway/sql
+    - run: |
+       docker run --rm \
+       -v /database/flyway/sql:/flyway/sql \
+       flyway/flyway \
+       -url=${{ secrets.FLYWAY_DB_URL }} \
+       -user=${{ secrets.FLYWAY_USER }} \
+       -password=${{ secrets.FLYWAY_PASSWORD}} \
+       migrate
