@@ -1,0 +1,78 @@
+@{
+  ViewData["Title"] = "Home Page";
+  string diff = (string) ViewData["Diff"];
+  var commitId = ViewData["CommitId"];
+  var summary = ViewData["Summary"];
+
+  diff.Replace("\n", "<b/>\n");
+}
+
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/diff2html/bundles/css/diff2html.min.css" />
+
+  <!-- Javascripts -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/diff2html/bundles/js/diff2html-ui.min.js"></script>
+</head>
+
+<body>
+  <div class="text-center">
+    <h4 class="display-6">Commit: @commitId</h4>
+    <div class=text-block-holder>
+      <div class=diff-block id=diffViewer>
+      </div>
+
+      <div class=summary-block>
+        <div class=summary-head>
+          <h5>Summary:</h5>
+          <div class="audio-handler">
+            <button id=trigger-speech>Read Summary</button>
+          </div>
+        </div>
+        <h1 id=upper-quote>"""</h1>
+        <blockquote id=summary-text>
+          @summary
+
+        </blockquote>
+        <h1 id=lower-quote>"""</h1>
+
+      </div>
+    </div>
+  </div>
+  <div id=hidden-diff>
+    @diff
+  </div>
+      <script>
+      function getVoices() {
+        let voices = speechSynthesis.getVoices();
+        if (!voices.length) {
+          let utterance = new SpeechSynthesisUtterance("");
+          speechSynthesis.speak(utterance);
+          voices = speechSynthesis.getVoices();
+        }
+        return voices;
+      }
+
+      document.getElementById('trigger-speech').addEventListener('click', () => {
+        const text = document.getElementById('summary-text').innerText;
+        const utterance = new SpeechSynthesisUtterance();
+        utterance.volume = 1; // From 0 to 1
+        utterance.rate = 1.4; // From 0.1 to 10
+        utterance.pitch = 2; // From 0 to 2
+        utterance.text = text;
+        utterance.lang = 'en';
+        utterance.voice = getVoices()[0];
+        speechSynthesis.speak(utterance);
+      })
+    </script>
+    <script>
+      // JavaScript code to render Git diff using diff2html
+      const diffString = document.getElementById('hidden-diff').innerText
+      const targetElement = document.getElementById('diffViewer');
+      const configuration = { drawFileList: true, matching: 'lines' };
+
+      const diff2htmlUi = new Diff2HtmlUI(targetElement, diffString, configuration);
+      diff2htmlUi.draw();
+    </script>
+</body>
