@@ -1,0 +1,45 @@
+﻿@model IEnumerable<gitSummaryMvc.Models.Commit>
+
+@{
+    var commits = ViewData["Commits"] = "View";
+}
+
+<h1>View all commits</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Createddate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Message)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.Username)
+            </th>
+            <th>
+                View
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Createddate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Message)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Username)
+            </td>
+            <td>
+                <a asp-action="Commit" asp-route-CommitId=@item.Commitid>Commit</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

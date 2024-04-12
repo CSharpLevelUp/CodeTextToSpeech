@@ -1,5 +1,7 @@
 using gitSummaryMvc.Models;
+using gitSummaryMvc.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace gitSummaryMvc.Controllers
 {
@@ -28,6 +30,15 @@ namespace gitSummaryMvc.Controllers
           ViewData["CommitId"] = commit.Commitid;
           ViewData["Summary"] = commit.Summary;
           return View();
+        }
+
+        public IActionResult List()
+        {
+            var commits = _tsdbContext.Commits.ToList();
+            commits.ForEach(a => a.User = _tsdbContext.Users.Where(b => b.Userid == a.Userid).First());
+
+            ViewData["commits"] = commits;
+            return View(commits);
         }
     }
 }
