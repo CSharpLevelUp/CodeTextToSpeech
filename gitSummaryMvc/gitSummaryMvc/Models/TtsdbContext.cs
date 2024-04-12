@@ -21,7 +21,7 @@ public partial class TtsdbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=texttospeechdb.cltqgxhlp0db.eu-west-1.rds.amazonaws.com;Database=ttsdb;Username=dbadmin;Password=RDS_password_123_");
+        => optionsBuilder.UseNpgsql(Environment.GetEnvironmentVariable("NPG_SQL"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -3,8 +3,7 @@
   string diff = (string) ViewData["Diff"];
   var commitId = ViewData["CommitId"];
   var summary = ViewData["Summary"];
-
-  diff.Replace("\n", "<b/>\n");
+  var thing = Json.Serialize(new { diff=diff });
 }
 
 <head>
@@ -68,11 +67,14 @@
     </script>
     <script>
       // JavaScript code to render Git diff using diff2html
-      const diffString = document.getElementById('hidden-diff').innerText
       const targetElement = document.getElementById('diffViewer');
       const configuration = { drawFileList: true, matching: 'lines' };
+      const diffText =  JSON.parse('@thing').diff;
 
-      const diff2htmlUi = new Diff2HtmlUI(targetElement, diffString, configuration);
+      const diff2htmlUi = new Diff2HtmlUI(targetElement, diffText, configuration);
       diff2htmlUi.draw();
+      console.log(diffText);
+
+      })
     </script>
 </body>
