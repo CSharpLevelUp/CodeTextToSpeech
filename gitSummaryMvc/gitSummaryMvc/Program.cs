@@ -54,7 +54,7 @@ namespace gitSummaryMvc
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Commit}/{action=List}");
 
             app.UseSwagger();
             app.UseSwaggerUI();
