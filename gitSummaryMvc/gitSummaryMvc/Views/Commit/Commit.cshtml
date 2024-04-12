@@ -39,10 +39,7 @@
       </div>
     </div>
   </div>
-  <div id=hidden-diff>
-    @diff
-  </div>
-      <script>
+    <script>
       function getVoices() {
         let voices = speechSynthesis.getVoices();
         if (!voices.length) {
@@ -74,7 +71,5 @@
       const diff2htmlUi = new Diff2HtmlUI(targetElement, diffText, configuration);
       diff2htmlUi.draw();
       console.log(diffText);
-
-      })
     </script>
 </body>
