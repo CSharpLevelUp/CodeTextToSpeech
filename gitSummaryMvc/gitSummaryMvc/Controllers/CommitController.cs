@@ -1,5 +1,6 @@
 using gitSummaryMvc.Models;
 using gitSummaryMvc.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -21,7 +22,7 @@ namespace gitSummaryMvc.Controllers
         {
             return View();
         }
-
+        [Authorize]
         public IActionResult Commit(int commitId)
         {
           var commit = _tsdbContext.Commits.FirstOrDefault(i => i.Commitid == commitId);
@@ -32,6 +33,7 @@ namespace gitSummaryMvc.Controllers
           return View();
         }
 
+        [Authorize]
         public IActionResult List()
         {
             var commits = _tsdbContext.Commits.ToList();
