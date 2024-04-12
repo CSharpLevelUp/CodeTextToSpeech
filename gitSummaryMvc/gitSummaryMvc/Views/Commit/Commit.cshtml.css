@@ -1,0 +1,39 @@
+.diff-block {
+  text-align: left;
+  inherits: false;
+}
+
+.summary-block {
+  text-align: left;
+  inherits: false;
+  padding-left: 1em;
+}
+
+.summary-head {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto auto; 
+}
+
+#summary-text {
+  background-color: #f0f3f5;
+  padding: 1em 1em;
+}
+
+.text-block-holder {
+  display: grid;
+  grid-template-columns: 50% 1fr;
+}
+
+#upper-quote {
+  padding: 0%;
+}
+
+#lower-quote {
+  padding: 0%;
+  text-align: right;
+}
+
+#hidden-diff {
+  visibility: hidden;
+}
